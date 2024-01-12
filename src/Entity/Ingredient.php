@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\IngredientRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\component\Validator\Constraints as Assert;
 
@@ -11,28 +12,28 @@ class Ingredient
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(type: 'string', length: 50)]
     #[Assert\Length(min: 2, max: 50)]
     private ?string $name = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'float')]
     #[Assert\NotBlank()]
     #[Assert\Positive()]
     #[Assert\LessThan(200)]
     private ?float $price = null;
-
-    #[ORM\Column]
-    #[Assert\NotBlank()]
-    private ?\DateTimeImmutable $createAt = null;
+   
+    #[ORM\Column(name: 'create_at', type: 'datetime_immutable')]
+    #[Assert\NotNull()]
+    private  $createdAt;
 
     /**
      * constructor
      */
     public function __construct(){
-        $this->createAt = new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -64,14 +65,14 @@ class Ingredient
         return $this;
     }
 
-    public function getCreateAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->createAt;
+        return $this->createdAt;
     }
 
-    public function setCreateAt(\DateTimeImmutable $createAt): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        $this->createAt = $createAt;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
